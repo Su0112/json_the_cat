@@ -1,6 +1,6 @@
 const request = require('request');
 
-const breedName = 'siberian';
+const breedName = process.argv[2];
 const url = `https://api.thecatapi.com/v1/breeds/search?q=${breedName}`;
 
 request(url, (error, response, body) => {
@@ -10,6 +10,10 @@ request(url, (error, response, body) => {
     console.log('Status:', response.statusCode);
   } else {
     const data = JSON.parse(body);
-    console.log(data);
+    if (data.length === 0) {
+      console.log(`Breed '${breedName}' not found.`);
+    } else {
+      console.log(data[0].description);
+    }
   }
 });
